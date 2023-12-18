@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/blogposts")
 public class BlogPostController {
 
-    @GetMapping
-    @ResponseBody
-    String sayHello() {
-        return "Hello World";
-    }
+  @GetMapping
+  @ResponseBody
+  String sayHello() {
+    return "Hello World";
+  }
 
 }

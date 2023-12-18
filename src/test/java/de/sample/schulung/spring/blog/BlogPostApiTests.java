@@ -14,18 +14,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class BlogPostApiTests {
 
-    @Autowired
-    MockMvc mvc;
+  @Autowired
+  MockMvc mvc;
 
-    @Test
-    void shouldReturn200WhenGetBlogPosts() throws Exception {
-        mvc.perform(
-                        get("/blogposts")
-                                .accept(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(
-                        status().isOk()
-                );
-    }
+  @Test
+  void shouldReturn200WhenGetBlogPosts() throws Exception {
+    mvc.perform(
+        get("/blogposts")
+          .accept(MediaType.APPLICATION_JSON)
+      )
+      .andExpect(
+        status().isOk()
+      );
+  }
 
 }
