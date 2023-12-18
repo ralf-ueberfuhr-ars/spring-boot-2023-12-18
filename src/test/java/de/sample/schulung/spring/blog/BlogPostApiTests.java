@@ -7,9 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -28,21 +29,13 @@ class BlogPostApiTests {
       .andExpect(content().contentType(MediaType.APPLICATION_JSON));
   }
 
-  /*
-   * Testfall:
-   *  - Lege BlogPost an (title: "test")
-   *  - Frage BlogPost ab und prüfe, ob Titel == "test"
-   */
-
   @Test
   void shouldReturn406WhenGetBlogPostsWithInvalidMediaType() throws Exception {
     mvc.perform(
         get("/blogposts")
           .accept(MediaType.APPLICATION_XML)
       )
-      .andExpect(
-        status().isNotAcceptable()
-      );
+      .andExpect(status().isNotAcceptable());
   }
 
   // TODO wenn zu komplex -> @Nested
@@ -50,24 +43,59 @@ class BlogPostApiTests {
   @Test
   void shouldCreateBlogPostSuccessfully() throws Exception {
     mvc.perform(
-      post("/blogposts")
-        .accept(MediaType.APPLICATION_JSON)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("""
-          {
-           "title": "test",
-           "content": "Das ist ein Test"
-          }
-        """)
-
-    )
+        post("/blogposts")
+          .accept(MediaType.APPLICATION_JSON)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content("""
+              {
+               "title": "test",
+               "content": "Das ist ein Test"
+              }
+            """)
+      )
       .andExpect(status().isCreated())
       .andExpect(jsonPath("$.title").value("test"))
       .andExpect(jsonPath("$.id").exists())
-      .andExpect(jsonPath("$.timestamp").exists());
-    // .title = "test"
-    // Location-Header
+      .andExpect(jsonPath("$.timestamp").exists())
+      .andExpect(header().exists("Location"));
   }
+
+  /*
+   * Testfall:
+   *  - Lege BlogPost an (title: "test")
+   *  - Frage BlogPost ab und prüfe, ob Titel == "test"
+   */
+
+  @Test
+  void shouldReturnSingleBlogPostSuccessfully() throws Exception {
+    // setup: create blog post
+    final var newBlogPostLocation =
+      mvc.perform(
+          post("/blogposts")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                 "title": "test",
+                 "content": "Das ist ein Test"
+                }
+              """)
+        )
+        .andReturn()
+        .getResponse()
+        .getHeader("Location");
+    assertThat(newBlogPostLocation).isNotEmpty();
+    // test: request blog post
+    mvc.perform(
+        get(newBlogPostLocation)
+          .accept(MediaType.APPLICATION_JSON)
+      )
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.title").value("test"))
+      .andExpect(jsonPath("$.id").exists())
+      .andExpect(jsonPath("$.timestamp").exists());
+  }
+
 
   // TODO wenn ID im Request mitgeschickt wird -> ??
 
