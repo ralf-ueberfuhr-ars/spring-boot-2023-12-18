@@ -10,7 +10,7 @@ Accept: application/json
 ###
 
 GET http://localhost:9080/blogposts
-Accept: text/plain
+Accept: application/xml
 
 > {%
   client.test("BlogPosts returned", () => {

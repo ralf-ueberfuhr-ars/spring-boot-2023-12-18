@@ -1,0 +1,14 @@
+POST http://localhost:9080/blogposts
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "test",
+  "content": "Das ist ein Test"
+}
+
+> {%
+  client.test("BlogPosts returned", () => {
+    client.assert(response.status === 201);
+  });
+%}
