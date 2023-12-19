@@ -1,4 +1,4 @@
-package de.sample.schulung.spring.blog;
+package de.sample.schulung.spring.blog.boundary;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

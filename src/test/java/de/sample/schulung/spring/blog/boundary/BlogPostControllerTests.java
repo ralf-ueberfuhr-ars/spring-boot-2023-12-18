@@ -1,4 +1,4 @@
-package de.sample.schulung.spring.blog;
+package de.sample.schulung.spring.blog.boundary;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
