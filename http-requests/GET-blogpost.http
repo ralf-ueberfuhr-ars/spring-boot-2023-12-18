@@ -1,0 +1,32 @@
+POST http://localhost:9080/blogposts
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "test",
+  "content": "Das ist ein Test"
+}
+
+> {%
+  client.test("BlogPosts returned", () => {
+    client.assert(response.status === 201);
+    client.assert(response.headers.valueOf("Location") !== undefined);
+    client.assert(response.body['id'] !== undefined);
+    client.assert(response.body['timestamp'] !== undefined);
+  });
+  client.global.set('newBlogPostLocation', response.headers.valueOf("Location"));
+  client.global.set('newBlogPostId', response.body['id']);
+%}
+
+###
+
+GET {{newBlogPostLocation}}
+Accept: application/json
+
+> {%
+  client.test("BlogPost found", () => {
+    client.assert(response.status === 200);
+    client.assert(response.body['title'] === 'test');
+    client.assert(response.body['id'] === client.global.get('newBlogPostId'));
+  });
+%}
