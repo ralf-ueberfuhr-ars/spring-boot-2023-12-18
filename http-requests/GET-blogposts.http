@@ -1,4 +1,4 @@
-GET http://localhost:9080/blogposts
+GET {{endpoint}}/blogposts
 Accept: application/json
 
 > {%
@@ -9,7 +9,7 @@ Accept: application/json
 
 ###
 
-GET http://localhost:9080/blogposts
+GET {{endpoint}}/blogposts
 Accept: application/xml
 
 > {%

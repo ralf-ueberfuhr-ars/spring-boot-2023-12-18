@@ -1,4 +1,4 @@
-POST http://localhost:9080/blogposts
+POST {{endpoint}}/blogposts
 Accept: application/json
 Content-Type: application/json
 
