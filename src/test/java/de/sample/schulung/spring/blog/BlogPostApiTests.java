@@ -1,9 +1,11 @@
 package de.sample.schulung.spring.blog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -57,7 +59,8 @@ class BlogPostApiTests {
       .andExpect(jsonPath("$.title").value("test"))
       .andExpect(jsonPath("$.id").exists())
       .andExpect(jsonPath("$.timestamp").exists())
-      .andExpect(header().exists("Location"));
+      .andExpect(header().exists(HttpHeaders.LOCATION));
+
   }
 
   /*
@@ -83,7 +86,7 @@ class BlogPostApiTests {
         )
         .andReturn()
         .getResponse()
-        .getHeader("Location");
+        .getHeader(HttpHeaders.LOCATION);
     assertThat(newBlogPostLocation).isNotEmpty();
     // test: request blog post
     mvc.perform(
