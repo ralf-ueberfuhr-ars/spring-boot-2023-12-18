@@ -2,9 +2,10 @@ package de.sample.schulung.spring.blog.boundary;
 
 import de.sample.schulung.spring.blog.domain.BlogPost;
 import de.sample.schulung.spring.blog.domain.BlogPostService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -20,8 +21,13 @@ public class BlogPostControllerWithMockedServiceTest {
   @Mock
   BlogPostService service;
 
-  @InjectMocks
   BlogPostController sut;
+
+  @BeforeEach
+  void setup() {
+    final var mapper = Mappers.getMapper(BlogPostDtoMapper.class);
+    this.sut = new BlogPostController(service, mapper);
+  }
 
   @Test
   void findByIdShouldReturnBlogPost() {

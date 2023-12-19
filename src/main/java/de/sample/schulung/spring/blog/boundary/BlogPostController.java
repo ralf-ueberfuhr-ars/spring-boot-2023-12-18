@@ -1,6 +1,5 @@
 package de.sample.schulung.spring.blog.boundary;
 
-import de.sample.schulung.spring.blog.domain.BlogPost;
 import de.sample.schulung.spring.blog.domain.BlogPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -20,20 +19,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class BlogPostController {
 
   private final BlogPostService service;
+  private final BlogPostDtoMapper mapper;
 
   @GetMapping(
     produces = MediaType.APPLICATION_JSON_VALUE
   )
   Stream<BlogPostDto> findAllBlogPosts() {
     return service.findAll()
-      .map(post -> {
-        BlogPostDto dto = new BlogPostDto();
-        dto.setId(post.getId());
-        dto.setTitle(post.getTitle());
-        dto.setContent(post.getContent());
-        dto.setTimestamp(post.getTimestamp());
-        return dto;
-      });
+      .map(mapper::map);
   }
 
   @GetMapping(
@@ -42,14 +35,7 @@ public class BlogPostController {
   )
   BlogPostDto findById(@PathVariable UUID id) {
     return service.findById(id)
-      .map(post -> {
-        BlogPostDto dto = new BlogPostDto();
-        dto.setId(post.getId());
-        dto.setTitle(post.getTitle());
-        dto.setContent(post.getContent());
-        dto.setTimestamp(post.getTimestamp());
-        return dto;
-      })
+      .map(mapper::map)
       .orElse(null);
   }
 
@@ -58,13 +44,9 @@ public class BlogPostController {
     produces = MediaType.APPLICATION_JSON_VALUE
   )
   ResponseEntity<BlogPostDto> createBlogPost(@RequestBody BlogPostDto blogPostDto) {
-    final var post = BlogPost.builder()
-      .title(blogPostDto.getTitle())
-      .content(blogPostDto.getContent())
-      .build();
+    final var post = mapper.map(blogPostDto);
     service.create(post);
-    blogPostDto.setId(post.getId());
-    blogPostDto.setTimestamp(post.getTimestamp());
+    mapper.copy(post, blogPostDto);
     // Maven Dependency: spring-boot-starter-hateoas
     final var location = linkTo(
       methodOn(BlogPostController.class)
