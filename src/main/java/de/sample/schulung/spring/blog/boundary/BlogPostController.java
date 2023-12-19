@@ -1,31 +1,40 @@
 package de.sample.schulung.spring.blog.boundary;
 
+import de.sample.schulung.spring.blog.domain.BlogPost;
+import de.sample.schulung.spring.blog.domain.BlogPostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-// Maven Dependency: spring-boot-starter-hateoas
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
 @RequestMapping("/blogposts")
+@RequiredArgsConstructor
 public class BlogPostController {
 
-  private final Map<UUID, BlogPostDto> blogPosts = new HashMap<>();
+  private final BlogPostService service;
 
   @GetMapping(
     produces = MediaType.APPLICATION_JSON_VALUE
   )
   Stream<BlogPostDto> findAllBlogPosts() {
-    return blogPosts.values().stream();
+    return service.findAll()
+      .map(post -> {
+        BlogPostDto dto = new BlogPostDto();
+        dto.setId(post.getId());
+        dto.setTitle(post.getTitle());
+        dto.setContent(post.getContent());
+        dto.setTimestamp(post.getTimestamp());
+        return dto;
+      });
   }
 
   @GetMapping(
@@ -33,7 +42,16 @@ public class BlogPostController {
     produces = MediaType.APPLICATION_JSON_VALUE
   )
   BlogPostDto findById(@PathVariable UUID id) {
-    return this.blogPosts.get(id);
+    return service.findById(id)
+      .map(post -> {
+        BlogPostDto dto = new BlogPostDto();
+        dto.setId(post.getId());
+        dto.setTitle(post.getTitle());
+        dto.setContent(post.getContent());
+        dto.setTimestamp(post.getTimestamp());
+        return dto;
+      })
+      .orElse(null);
   }
 
   @PostMapping(
@@ -41,14 +59,17 @@ public class BlogPostController {
     produces = MediaType.APPLICATION_JSON_VALUE
   )
   ResponseEntity<BlogPostDto> createBlogPost(@RequestBody BlogPostDto blogPostDto) {
-    final var id = UUID.randomUUID();
-    blogPostDto.setId(id);
-    blogPostDto.setTimestamp(LocalDateTime.now());
-    this.blogPosts.put(id, blogPostDto);
+    final var post = BlogPost.builder()
+      .title(blogPostDto.getTitle())
+      .content(blogPostDto.getContent())
+      .build();
+    service.create(post);
+    blogPostDto.setId(post.getId());
+    blogPostDto.setTimestamp(post.getTimestamp());
     // Maven Dependency: spring-boot-starter-hateoas
     final var location = linkTo(
       methodOn(BlogPostController.class)
-        .findById(id)
+        .findById(post.getId())
     ).toUri();
     return ResponseEntity
       .created(location)
