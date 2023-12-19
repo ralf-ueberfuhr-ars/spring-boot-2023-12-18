@@ -16,6 +16,9 @@ Alternatively, run the following command:
 mvn spring-boot:run
 ```
 
+Then, you can open the browser and find the available resources on
+`http://localhost:9080/index.html`.
+
 ## Build the project
 
 You can build the JAR file with Maven:
