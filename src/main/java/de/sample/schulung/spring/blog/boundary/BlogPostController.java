@@ -1,4 +1,4 @@
-package de.sample.schulung.spring.blog;
+package de.sample.schulung.spring.blog.boundary;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
