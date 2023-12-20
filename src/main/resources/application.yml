@@ -1,2 +1,5 @@
 server:
   port: ${SERVER_PORT:9080}
+logging:
+  level:
+    de.sample.schulung.spring.blog.domain.BlogPostEventLogger: debug
