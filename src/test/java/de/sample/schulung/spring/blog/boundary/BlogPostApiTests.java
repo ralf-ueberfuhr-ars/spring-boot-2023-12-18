@@ -62,6 +62,22 @@ class BlogPostApiTests {
 
   }
 
+  @Test
+  void shouldNotCreateInvalidBlogPost() throws Exception {
+    mvc.perform(
+        post("/blogposts")
+          .accept(MediaType.APPLICATION_JSON)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content("""
+              {
+               "content": "Das ist ein Test"
+              }
+            """)
+      )
+      .andExpect(status().isBadRequest());
+
+  }
+
   /*
    * Testfall:
    *  - Lege BlogPost an (title: "test")

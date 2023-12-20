@@ -1,6 +1,7 @@
 package de.sample.schulung.spring.blog.boundary;
 
 import de.sample.schulung.spring.blog.domain.BlogPostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,11 @@ public class BlogPostController {
     consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE
   )
-  ResponseEntity<BlogPostDto> createBlogPost(@RequestBody BlogPostDto blogPostDto) {
+  ResponseEntity<BlogPostDto> createBlogPost(
+    @Valid
+    @RequestBody
+    BlogPostDto blogPostDto
+  ) {
     final var post = mapper.map(blogPostDto);
     service.create(post);
     mapper.copy(post, blogPostDto);
