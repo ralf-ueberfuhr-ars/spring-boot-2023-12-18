@@ -14,8 +14,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,6 +58,23 @@ class BlogPostApiWithMockedServiceTests {
       .andExpect(jsonPath("$.title").value("test"))
       .andExpect(jsonPath("$.id").value(id.toString()))
       .andExpect(jsonPath("$.timestamp").exists());
+  }
+
+  @Test
+  void shouldNotCreateInvalidBlogPost() throws Exception {
+    mvc.perform(
+        post("/blogposts")
+          .accept(MediaType.APPLICATION_JSON)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content("""
+              {
+               "content": "Das ist ein Test"
+              }
+            """)
+      )
+      .andExpect(status().isBadRequest());
+    verifyNoInteractions(service);
+
   }
 
 
