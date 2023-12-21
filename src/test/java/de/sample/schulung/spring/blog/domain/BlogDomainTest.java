@@ -37,7 +37,7 @@ import java.lang.annotation.*;
 // - application-test-domain.yml especially for these tests
 @ActiveProfiles({"test", "test-domain"})
 // just to allow executing Maven running only these tests
-// run "mvc surefire:test -Dgroups=domain-integration-test"
+// run "mvn surefire:test -Dgroups=domain-integration-test"
 @Tag("integration-test")
 @Tag("domain-integration-test")
 public @interface BlogDomainTest {

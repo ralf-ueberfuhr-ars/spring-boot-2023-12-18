@@ -32,7 +32,7 @@ import static org.mockito.Mockito.mock;
 // - application-test-boundary.yml especially for these tests
 @ActiveProfiles({"test", "test-boundary"})
 // just to allow executing Maven running only these tests
-// run "mvc surefire:test -Dgroups=boundary-integration-test"
+// run "mvn surefire:test -Dgroups=boundary-integration-test"
 @Tag("integration-test")
 @Tag("boundary-integration-test")
 public @interface BlogBoundaryTest {

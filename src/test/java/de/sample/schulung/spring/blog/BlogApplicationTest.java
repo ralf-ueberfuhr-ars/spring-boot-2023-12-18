@@ -22,7 +22,7 @@ import java.lang.annotation.*;
 // - application-test-full.yml especially for these tests
 @ActiveProfiles({"test", "test-full"})
 // just to allow executing Maven running only these tests
-// run "mvc surefire:test -Dgroups=boundary-integration-test"
+// run "mvn surefire:test -Dgroups=full-integration-test"
 @Tag("integration-test")
 @Tag("full-integration-test")
 public @interface BlogApplicationTest {
