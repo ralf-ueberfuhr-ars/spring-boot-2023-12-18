@@ -1,12 +1,14 @@
 package de.sample.schulung.spring.blog.domain;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Profile("!no-initialization")
 public class BlogPostInitializer {
 
   private final BlogPostService service;

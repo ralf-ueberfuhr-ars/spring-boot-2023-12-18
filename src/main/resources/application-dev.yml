@@ -1,0 +1,3 @@
+logging:
+  level:
+    de.sample.schulung.spring.blog.domain.BlogPostEventLogger: debug
