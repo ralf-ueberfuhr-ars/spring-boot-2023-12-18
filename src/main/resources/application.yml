@@ -1,2 +1,11 @@
 server:
   port: ${SERVER_PORT:9080}
+application:
+  initialization:
+    blogposts:
+      - title: Welcome to the blog!
+        content: This is a great blog :)
+      - title: BlogPost 2
+        content: Das ist ein weiterer Blog Post
+
+
