@@ -7,5 +7,6 @@ application:
         content: This is a great blog :)
       - title: BlogPost 2
         content: Das ist ein weiterer Blog Post
-
-
+cors:
+  allow:
+    origins: ${CORS_ALLOW_ORIGINS:*}
