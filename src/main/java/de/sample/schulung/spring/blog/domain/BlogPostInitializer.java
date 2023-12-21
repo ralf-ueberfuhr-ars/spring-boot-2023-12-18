@@ -1,5 +1,6 @@
 package de.sample.schulung.spring.blog.domain;
 
+import de.sample.schulung.spring.blog.domain.config.BlogPostConfigMapper;
 import de.sample.schulung.spring.blog.domain.config.BlogPostInitializationConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -14,21 +15,15 @@ public class BlogPostInitializer {
 
   private final BlogPostService service;
   private final BlogPostInitializationConfig config;
+  private final BlogPostConfigMapper mapper;
 
   @EventListener(ContextRefreshedEvent.class)
   void initBlogPosts() {
     if(service.count() == 0 && config.isEnabled()) {
       config.getBlogposts()
-          .forEach(
-            blogPostConfig -> {
-              var blogpost = BlogPost
-                .builder()
-                .title(blogPostConfig.getTitle())
-                .content(blogPostConfig.getContent())
-                .build();
-              service.create(blogpost);
-            }
-          );
+        .stream()
+        .map(this.mapper::map)
+        .forEach(service::create);
     }
 
   }
