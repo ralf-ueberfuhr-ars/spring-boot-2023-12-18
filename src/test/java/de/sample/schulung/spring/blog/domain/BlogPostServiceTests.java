@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+// komplette Anwendung -> Test der Konfiguration in application.yml
 public class BlogPostServiceTests {
 
   @Autowired
