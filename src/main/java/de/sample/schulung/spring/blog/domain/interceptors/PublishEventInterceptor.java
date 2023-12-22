@@ -45,7 +45,7 @@ public class PublishEventInterceptor
 
   @Override
   public void afterPropertiesSet() {
-    Pointcut pointcut = new AnnotationMatchingPointcut(PublishEvent.class, true);
+    Pointcut pointcut = new AnnotationMatchingPointcut(null, PublishEvent.class, true);
     this.advisor = new DefaultPointcutAdvisor(pointcut, publishEventAdvice);
   }
 
