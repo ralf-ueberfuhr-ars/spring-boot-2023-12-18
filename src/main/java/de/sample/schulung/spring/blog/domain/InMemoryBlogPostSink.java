@@ -1,6 +1,5 @@
 package de.sample.schulung.spring.blog.domain;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -20,7 +19,6 @@ public class InMemoryBlogPostSink implements BlogPostSink {
   public void create(BlogPost post) {
     final var id = UUID.randomUUID();
     post.setId(id);
-    post.setTimestamp(LocalDateTime.now());
     this.blogPosts.put(id, post);
 
   }
