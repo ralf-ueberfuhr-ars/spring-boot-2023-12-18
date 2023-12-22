@@ -2,6 +2,7 @@ package de.sample.schulung.spring.blog.domain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
@@ -13,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * THIS WILL LEAD TO A SEPARATE CONTEXT !!!
  */
 @SpringBootTest
+@AutoConfigureTestDatabase
 // komplette Anwendung -> Test der Konfiguration in application.yml
 @TestPropertySource(properties = {
   "application.initialization.enabled=true",
