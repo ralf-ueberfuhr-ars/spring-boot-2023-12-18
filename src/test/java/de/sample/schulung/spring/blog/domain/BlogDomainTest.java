@@ -44,7 +44,18 @@ public @interface BlogDomainTest {
 
   @TestConfiguration
   class BlogDomainTestConfiguration {
-    // we could register mocks here, that we might need for tests
+
+    /* TODO - we need a simple in-memory, but for each test
+    @Bean
+    BlogPostSink blogPostSink() {
+      return mock(
+        BlogPostSink.class,
+        // reset the mock instructions and verifications between the tests
+        MockReset.withSettings(MockReset.AFTER)
+      );
+    }
+    */
+
   }
 
 }
