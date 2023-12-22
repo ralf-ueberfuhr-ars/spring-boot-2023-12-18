@@ -11,4 +11,9 @@ public interface BlogPostSink {
   Stream<BlogPost> findAll();
   Optional<BlogPost> findById(UUID id);
 
+  default void createAll(BlogPost... blogposts) {
+    Stream.of(blogposts)
+      .forEach(this::create);
+  }
+
 }

@@ -4,6 +4,7 @@ import de.sample.schulung.spring.blog.domain.BlogPost;
 import de.sample.schulung.spring.blog.domain.BlogPostSink;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -27,6 +28,12 @@ public class JpaBlogPostSink implements BlogPostSink {
     final var savedEntity = repo.save(entity);
     //post.setId(savedEntity.getId());
     mapper.copy(savedEntity, post);
+  }
+
+  @Transactional
+  @Override
+  public void createAll(BlogPost... blogposts) {
+    BlogPostSink.super.createAll(blogposts);
   }
 
   @Override

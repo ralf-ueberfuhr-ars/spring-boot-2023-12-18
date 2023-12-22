@@ -1,9 +1,9 @@
 package de.sample.schulung.spring.blog.domain;
 
+import de.sample.schulung.spring.blog.domain.interceptors.PublishEvent;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class BlogPostService {
 
-  private final ApplicationEventPublisher eventPublisher;
   private final BlogPostSink sink;
 
   public long count() {
@@ -32,11 +31,10 @@ public class BlogPostService {
     return sink.findById(id);
   }
 
+  @PublishEvent(BlogPostCreatedEvent.class)
   public void create(@Valid @NotNull BlogPost blogPost) {
     blogPost.setTimestamp(LocalDateTime.now());
     this.sink.create(blogPost);
-    this.eventPublisher.publishEvent(new BlogPostCreatedEvent(blogPost));
   }
-
 
 }
