@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -32,6 +33,7 @@ public class BlogPostService {
   }
 
   public void create(@Valid @NotNull BlogPost blogPost) {
+    blogPost.setTimestamp(LocalDateTime.now());
     this.sink.create(blogPost);
     this.eventPublisher.publishEvent(new BlogPostCreatedEvent(blogPost));
   }

@@ -27,4 +27,11 @@ public class BlogPostEntity {
   @Column(name = "TIME_STAMP")
   private LocalDateTime timestamp;
 
+  /*
+  @PrePersist
+  public void updateTimestamp() {
+    this.timestamp = LocalDateTime.now();
+  }
+  */
+
 }
