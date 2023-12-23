@@ -1,12 +1,12 @@
 package de.sample.schulung.spring.blog.domain;
 
+import de.sample.schulung.spring.blog.BlogApplicationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-@BlogDomainTest
+@BlogApplicationTest
 public class BlogPostServiceTests {
 
   @Autowired
