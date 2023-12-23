@@ -1,3 +1,6 @@
 application:
   initialization:
     enabled: false
+logging:
+  level:
+    de.sample.schulung.spring.blog.domain: debug

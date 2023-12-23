@@ -4,15 +4,12 @@ import de.sample.schulung.spring.blog.domain.BlogPost;
 import de.sample.schulung.spring.blog.domain.BlogPostSink;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-@ComponentScan(basePackageClasses = JpaBlogPostSinkTests.class)
+@BlogPersistenceTest
 public class JpaBlogPostSinkTests {
 
   @Autowired

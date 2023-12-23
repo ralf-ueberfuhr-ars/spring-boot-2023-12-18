@@ -4,10 +4,6 @@ import de.sample.schulung.spring.blog.domain.BlogPost;
 import de.sample.schulung.spring.blog.domain.BlogPostService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,15 +18,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
-@ComponentScan(basePackageClasses = BlogPostApiWithMockedServiceTests.class)
-@AutoConfigureMockMvc
+@BlogBoundaryTest
 class BlogPostApiWithMockedServiceTests {
 
   @Autowired
   MockMvc mvc;
-  @MockBean // replace original service in context by this mock
-  BlogPostService service;
+  @Autowired // this is a mock!
+  BlogPostService serviceMock;
 
 
   /*
@@ -48,7 +42,7 @@ class BlogPostApiWithMockedServiceTests {
       .timestamp(LocalDateTime.now())
       .build();
     // Setup
-    when(service.findById(id))
+    when(serviceMock.findById(id))
       .thenReturn(Optional.of(samplePost));
 
     // test: request blog post
@@ -75,7 +69,7 @@ class BlogPostApiWithMockedServiceTests {
             """)
       )
       .andExpect(status().isBadRequest());
-    verifyNoInteractions(service);
+    verifyNoInteractions(serviceMock);
 
   }
 

@@ -1,16 +1,14 @@
 package de.sample.schulung.spring.blog.boundary;
 
+import de.sample.schulung.spring.blog.BlogApplicationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 // SO NICHT!
-@SpringBootTest
-@AutoConfigureTestDatabase
+@BlogApplicationTest
 public class BlogPostControllerIntegrationTests {
 
   @Autowired
